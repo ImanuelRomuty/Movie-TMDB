@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.movietmdbchallenge.R
 import com.example.movietmdbchallenge.databinding.FragmentSplashBinding
+import com.example.movietmdbchallenge.ui.login.LoginViewModel
 
 
 class SplashFragment : Fragment() {
@@ -16,7 +18,7 @@ class SplashFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val viewModel : SplashViewModel by viewModels()
+    private val viewModel : LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,8 +37,13 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.loginCek()
         viewModel.getCekValidSplash().observe(viewLifecycleOwner){
-            Handler(Lo)
+            if(it==0){
+                findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
+            }else{
+                findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
+            }
         }
 
     }

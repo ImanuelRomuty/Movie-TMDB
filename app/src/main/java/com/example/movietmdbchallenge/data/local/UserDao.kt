@@ -13,4 +13,7 @@ interface UserDao {
     @Update
     fun updateUserAccount(user : User) : Int
 
+    @Query("SELECT username FROM user WHERE email=:email AND password = :password")
+    fun getUsername(email:String , password : String) : List<User>
+
 }

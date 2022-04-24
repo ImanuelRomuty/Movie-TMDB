@@ -18,6 +18,7 @@ class MovieUpComingViewModel : ViewModel() {
             getAllMoviesUpComing()
         }
     }
+    val username: MutableLiveData<String> by lazy { MutableLiveData<String>()}
     fun getMovieUpComing(): LiveData<List<Result>> {
         return movieUpComing
     }

@@ -18,7 +18,7 @@ class LoginViewModel(app :Application) :AndroidViewModel(app) {
     val context by lazy {
         getApplication<Application>().applicationContext
     }
-    val email : MutableLiveData<String> by lazy { MutableLiveData<String>()}
+    val emailCatch : MutableLiveData<String> by lazy { MutableLiveData<String>()}
     val password : MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val username: MutableLiveData<String> by lazy { MutableLiveData<String>()}
     val executor = Executors.newSingleThreadExecutor()
@@ -38,9 +38,12 @@ class LoginViewModel(app :Application) :AndroidViewModel(app) {
     fun getCekValidSplash(): LiveData<Int> {
         return cekValidSplash
     }
-
-
-
+    val cekValidLogOut : MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>()
+    }
+    fun getcekValidLogOut(): LiveData<Int> {
+        return cekValidLogOut
+    }
     //SHAREDPREFERENCE
     private val sharedPreffile = "sharedpreferences"
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
@@ -56,6 +59,7 @@ class LoginViewModel(app :Application) :AndroidViewModel(app) {
         executor.execute{
             val login = mDB?.userDao()?.getUserAccount(email,password)
             runOnUiThread {
+                emailCatch.value = email
                 Log.d("CEKLOGIN",login.toString())
                 if (login != null) {
                     if (login.isEmpty() ){
@@ -64,9 +68,11 @@ class LoginViewModel(app :Application) :AndroidViewModel(app) {
                     }else{
                         Toast.makeText(context, "Username atau Password Anda Sukses", Toast.LENGTH_SHORT).show()
                         cekValidLogin.postValue(1)
-                        editor.putString("email_key",email)
+                        emailCatch.postValue(email)
+                        editor.putString("email_key",emailCatch.value)
                         editor.putString("password_key",password)
                         editor.apply()
+
                     }
                 }
             }
@@ -79,9 +85,18 @@ class LoginViewModel(app :Application) :AndroidViewModel(app) {
         if(emailPatch !="defaultValue"){
             cekValidSplash.postValue(1)
             username.value= usernamePatch
-            email.value= emailPatch
+            emailCatch.value= emailPatch
+
         }else{
             cekValidSplash.value=0
+            emailCatch.value= emailPatch
+
         }
+    }
+
+    fun logout(){
+        editor.clear()
+        editor.apply()
+        cekValidLogOut.postValue(0)
     }
 }

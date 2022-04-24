@@ -19,6 +19,9 @@ class MovieRecommendationViewModel : ViewModel() {
     fun getMovieRecommendation():LiveData<List<Result>>{
         return movieRecommendation
     }
+    val username: MutableLiveData<String> by lazy { MutableLiveData<String>()}
+
+
     private fun getAllMoviesRecommendation() {
         MovieApi.instance.allMovieRecommendation().enqueue(object : Callback<RecommendationMovieResponse> {
             override fun onResponse(call: Call<RecommendationMovieResponse>, response: Response<RecommendationMovieResponse>) {

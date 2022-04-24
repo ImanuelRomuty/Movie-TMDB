@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_homeFragment_to_profileUserFragment"
             app:destination="@id/profileUserFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/recomendationFragment"
@@ -64,4 +67,17 @@
         android:name="com.example.movietmdbchallenge.ui.profileUser.ProfileUserFragment"
         android:label="fragment_profile_user"
         tools:layout="@layout/fragment_profile_user" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.movietmdbchallenge.ui.splashScreen.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+
+    </fragment>
 </navigation>
