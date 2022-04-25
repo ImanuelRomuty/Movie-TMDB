@@ -21,7 +21,7 @@ abstract class ApplicationDatabase(): RoomDatabase() {
                 synchronized(ApplicationDatabase::class) {
                     INSTANCE = Room.databaseBuilder(
                         context.applicationContext,
-                        ApplicationDatabase::class.java, "UserMovie124.db").build()
+                        ApplicationDatabase::class.java, "UserMovie1242.db").build()
                 }
             }
             return INSTANCE

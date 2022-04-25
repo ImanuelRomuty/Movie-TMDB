@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.movietmdbchallenge.R
 import com.example.movietmdbchallenge.databinding.FragmentLoginBinding
+import com.example.movietmdbchallenge.ui.home.UserViewModel
+
 
 
 class LoginFragment : Fragment() {
@@ -16,7 +19,7 @@ class LoginFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val viewModel : LoginViewModel by viewModels()
+    private val viewModel : UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,11 +45,22 @@ class LoginFragment : Fragment() {
         binding.loginButton.setOnClickListener {
             viewModel.login(binding.inputEmailEditText.text.toString(),binding.inputPasswordEditText.text.toString())
         }
-        viewModel.getCekValidLogin().observe(viewLifecycleOwner){
+//        viewModel.loginCek()
+        viewModel.getValidationAll().observe(viewLifecycleOwner){
             if(it != 0){
                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
             }
         }
+
+
+
+//        viewModel.getValidationAll().observe(viewLifecycleOwner){
+//            if(it==0){
+////                findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
+//            }else if (it==1){
+////                findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
+//            }
+//        }
     }
 
 }

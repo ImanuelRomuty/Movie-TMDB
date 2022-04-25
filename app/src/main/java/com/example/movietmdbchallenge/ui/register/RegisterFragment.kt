@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.listmoview.room.User
 import com.example.movietmdbchallenge.R
 import com.example.movietmdbchallenge.databinding.FragmentRegisterBinding
+import com.example.movietmdbchallenge.ui.home.UserViewModel
 
 
 class RegisterFragment : Fragment() {
@@ -17,7 +19,7 @@ class RegisterFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val viewModel : RegisterViewModel by viewModels()
+    private val viewModel : UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

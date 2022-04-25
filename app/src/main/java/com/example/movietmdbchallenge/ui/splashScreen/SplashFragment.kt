@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.movietmdbchallenge.R
 import com.example.movietmdbchallenge.databinding.FragmentSplashBinding
+import com.example.movietmdbchallenge.ui.home.UserViewModel
 import com.example.movietmdbchallenge.ui.login.LoginViewModel
 
 
@@ -18,7 +20,7 @@ class SplashFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val viewModel : LoginViewModel by viewModels()
+    private val viewModel : UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,22 +32,18 @@ class SplashFragment : Fragment() {
         return view
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loginCek()
-        viewModel.getCekValidSplash().observe(viewLifecycleOwner){
-            if(it==0){
-                findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
-            }else{
-                findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
-            }
-        }
-
+//        Handler().postDelayed({
+//            findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
+//        },2000)
+//        viewModel.loginCek()
+//            viewModel.getValidationAll().observe(viewLifecycleOwner){
+//                if(it==0){
+//                    findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
+//                }else if (it==1){
+//                    findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
+//                }
+//            }
     }
-
 }

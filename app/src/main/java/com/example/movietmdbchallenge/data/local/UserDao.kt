@@ -8,12 +8,17 @@ import java.net.UnknownServiceException
 interface UserDao {
     @Insert
     fun addUser(user: User): Long
+
     @Query("SELECT * FROM user WHERE email=:email AND password = :password")
     fun getUserAccount(email:String , password : String) : List<User>
+
     @Update
     fun updateUserAccount(user : User) : Int
 
-    @Query("SELECT username FROM user WHERE email=:email AND password = :password")
-    fun getUsername(email:String , password : String) : List<User>
+    @Query("SELECT * FROM user WHERE email=:email ")
+    fun getUsername(email:String? ) : List<User>
+
+    @Query("UPDATE User SET username = :username , fullname = :fullname , ultah = :ultah , address = :address WHERE email =:email")
+    fun updateProfile(email: String?=null,username:String?=null,fullname : String?=null, ultah:String?=null,address:String?=null) : Int
 
 }
