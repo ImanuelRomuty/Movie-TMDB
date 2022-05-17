@@ -27,10 +27,8 @@ class MovieUpComingViewModel : ViewModel() {
             Callback<UpComingMovieResponse> {
             override fun onResponse(call: Call<UpComingMovieResponse>, response: Response<UpComingMovieResponse>) {
                 movieUpComing.value = response.body()?.results
-                Log.d("NUEL", movieUpComing.value.toString())
             }
             override fun onFailure(call: Call<UpComingMovieResponse>, t: Throwable) {
-                Log.d("CUPU",t.message.toString())
             }
         })
     }

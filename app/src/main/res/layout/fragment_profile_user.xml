@@ -7,6 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.profileUser.ProfileUserFragment">
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,8 +18,15 @@
         android:textStyle="bold"
         android:textColor="@color/black"
         >
-
     </TextView>
+    <ImageView
+        android:id="@+id/imageProfile"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@color/black"
+        ></ImageView>
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/material_username"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -31,7 +40,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:hint="Username" />
+            android:hint="Username"
+            android:focusable="false"
+            />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/material_fullname"

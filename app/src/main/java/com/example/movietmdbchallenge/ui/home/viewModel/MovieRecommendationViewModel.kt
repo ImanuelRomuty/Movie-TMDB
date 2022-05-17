@@ -7,10 +7,12 @@ import androidx.lifecycle.ViewModel
 import com.example.movietmdbchallenge.data.api.recommendationMovie.RecommendationMovieResponse
 import com.example.movietmdbchallenge.data.api.recommendationMovie.Result
 import com.example.movietmdbchallenge.network.MovieApi
+import com.example.movietmdbchallenge.remote.MovieRepository
+import com.example.movietmdbchallenge.remote.MoviesRemoteDataSource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-class MovieRecommendationViewModel : ViewModel() {
+class MovieRecommendationViewModel(private val repository: MovieRepository) : ViewModel() {
     private val  movieRecommendation : MutableLiveData<List<Result>> by lazy {
         MutableLiveData<List<Result>>().also {
             getAllMoviesRecommendation()
@@ -20,16 +22,13 @@ class MovieRecommendationViewModel : ViewModel() {
         return movieRecommendation
     }
     val username: MutableLiveData<String> by lazy { MutableLiveData<String>()}
-
-
     private fun getAllMoviesRecommendation() {
-        MovieApi.instance.allMovieRecommendation().enqueue(object : Callback<RecommendationMovieResponse> {
-            override fun onResponse(call: Call<RecommendationMovieResponse>, response: Response<RecommendationMovieResponse>) {
-                movieRecommendation.value = response.body()?.results
-                Log.d("MOVIEREQ", movieRecommendation.value.toString())
+        repository.getMovies(object : MoviesRemoteDataSource.MovieCAllback{
+            override fun onComplete(listResult: List<Result>) {
+                movieRecommendation.value = listResult
             }
-            override fun onFailure(call: Call<RecommendationMovieResponse>, t: Throwable) {
-                Log.d("CAKEP",t.message.toString())
+            override fun onError() {
+                Log.d("ERROROM","ERROR GAES")
             }
         })
     }

@@ -1,5 +1,6 @@
 package com.example.movietmdbchallenge.ui.home
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -13,7 +14,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.listmoview.room.User
 import com.example.movietmdbchallenge.data.local.ApplicationDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
+
 
 class UserViewModel(app:Application):AndroidViewModel(app) {
     val context by lazy {
@@ -59,8 +64,6 @@ class UserViewModel(app:Application):AndroidViewModel(app) {
     fun getValidationAll():LiveData<Int>{
         return _validation
     }
-
-
     //VARIABEL PATCH
     private val emailPatch      : MutableLiveData<String> by lazy { MutableLiveData<String>()}
     private val passwordPatch   : MutableLiveData<String> by lazy { MutableLiveData<String>()}
@@ -69,14 +72,10 @@ class UserViewModel(app:Application):AndroidViewModel(app) {
     val birthPatch              : MutableLiveData<String> by lazy { MutableLiveData<String>()}
     val addressPatch            : MutableLiveData<String> by lazy { MutableLiveData<String>()}
     val testingData             : MutableLiveData<String> by lazy { MutableLiveData<String>()}
-
-
     fun getEmailPatch(){
         val emailPatchData = sharedPreferences.getString("email_key", "defaultValue")
         usernamePatch.value = emailPatchData.toString()
     }
-
-
 
     //SHAREDPREFERENCE
     private val sharedPreffile = "sharedpreferences"
@@ -85,52 +84,42 @@ class UserViewModel(app:Application):AndroidViewModel(app) {
         Context.MODE_PRIVATE
     )
     private val editor: SharedPreferences.Editor = sharedPreferences.edit()
-
-
-
-
     //VIEW MODEL LOGIN
-    fun login(email:String,password:String){
-        mDB = ApplicationDatabase.getInstance(context)
-        val emailtempt = StringBuffer()
-        val passwordtempt = StringBuffer()
-        val usernametempt = StringBuffer()
-        executor.execute{
-            val login = mDB?.userDao()?.getUserAccount(email,password)
-            runOnUiThread {
-                login?.forEach {
-                    emailtempt.append(it.email)
-                    passwordtempt.append(it.password)
-                    usernametempt.append(it.username)
-                }
-                Log.d("dbusername",usernametempt.toString())
-                emailPatch.value = emailtempt.toString()
-                passwordPatch.value = passwordtempt.toString()
-                usernamePatch.value = usernametempt.toString()
-                Log.d("setNUllLogin",usernamePatch.value.toString())
-
-
-                Log.d("CEKLOGIN",login.toString())
-                if (login != null) {
-                    if (login.isEmpty() ){
-                        Toast.makeText(context, "Username atau Password Anda Gagal", Toast.LENGTH_SHORT).show()
-                        cekValidLogin.postValue(0)
-                        _validation.postValue(0)
-                    }else{
-                        Toast.makeText(context, "Username atau Password Anda Sukses", Toast.LENGTH_SHORT).show()
-                        cekValidLogin.postValue(1)
-                        _validation.postValue(1)
-                        editor.putString("email_key",emailPatch.value)
-                        editor.putString("password_key",passwordPatch.value)
-                        editor.putString("username_key",usernamePatch.value)
-                        editor.apply()
-
-                    }
-                }
-            }
-        }
-    }
-
+//    fun login(email:String,password:String){
+//        mDB = ApplicationDatabase.getInstance(context)
+//        val emailtempt = StringBuffer()
+//        val passwordtempt = StringBuffer()
+//        val usernametempt = StringBuffer()
+//        executor.execute{
+//            val login = mDB?.userDao()?.getUserAccount(email,password)
+//            runOnUiThread {
+//                login?.forEach {
+//                    emailtempt.append(it.email)
+//                    passwordtempt.append(it.password)
+//                    usernametempt.append(it.username)
+//                }
+//                emailPatch.value = emailtempt.toString()
+//                passwordPatch.value = passwordtempt.toString()
+//                usernamePatch.value = usernametempt.toString()
+//                if (login != null) {
+//                    if (login.isEmpty() ){
+//                        Toast.makeText(context, "Username atau Password Anda Gagal", Toast.LENGTH_SHORT).show()
+//                        cekValidLogin.postValue(0)
+//                        _validation.postValue(0)
+//                    }else{
+//                        Toast.makeText(context, "Username atau Password Anda Sukses", Toast.LENGTH_SHORT).show()
+//                        cekValidLogin.postValue(1)
+//                        _validation.postValue(1)
+//                        editor.putString("email_key",emailPatch.value)
+//                        editor.putString("password_key",passwordPatch.value)
+//                        editor.putString("username_key",usernamePatch.value)
+//                        editor.apply()
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
     //VIEW MODEL REGISTER
     fun register(userData: User, cekPassword: String) {
         mDB = ApplicationDatabase.getInstance(context)
@@ -152,7 +141,6 @@ class UserViewModel(app:Application):AndroidViewModel(app) {
 
         }
     }
-
     //VIEW MODEL SPLASHSCREEN
     fun loginCek(){
         val emailPatchData = sharedPreferences.getString("email_key", "defaultValue")
@@ -160,79 +148,89 @@ class UserViewModel(app:Application):AndroidViewModel(app) {
         if(emailPatchData !="defaultValue"){
             usernamePatch.value = usernamePatchData.toString()
             emailPatch.value    = emailPatchData.toString()
-            Log.d("setNUllSplash",usernamePatch.value.toString())
-            Log.d("USERAMEUSERPATCH",usernamePatch.value.toString())
-            Log.d("USERAMEUSER",usernamePatchData.toString())
             cekValidSplash.postValue(1)
             _validation.postValue(1)
         }else{
             cekValidSplash.value=0
             _validation.postValue(0)
-
         }
     }
 
+//    fun getUserData() {
+//        val usernameResult = StringBuffer()
+//        val fullnameResult = StringBuffer()
+//        val birthdateResult = StringBuffer()
+//        val addressResult = StringBuffer()
+//        mDB = ApplicationDatabase.getInstance(context)
+//        viewModelScope.launch(Dispatchers.IO){
+//            val user = mDB?.userDao()?.getUsername(emailPatch.value)
+//            runBlocking(Dispatchers.Main) {
+//                user?.forEach {
+//                    usernameResult.append(it.username)
+//                    fullnameResult.append(it.fullname)
+//                    birthdateResult.append(it.ultah)
+//                    addressResult.append(it.address)
+//                }
+//                usernamePatch.value=usernameResult.toString()
+//                fullnamePatch.value=fullnameResult.toString()
+//                birthPatch.value=birthdateResult.toString()
+//                addressPatch.value=addressResult.toString()
+//                editor.putString("username_key", usernamePatch.value)
+//                editor.apply()
+//            }
+//        }
+//    }
 
+//    fun updateData(userData: User){
+//        mDB = ApplicationDatabase.getInstance(context)
+//        executor.execute{
+//            val result = mDB?.userDao()?.updateProfile(
+//                username = userData.username,
+//                fullname = userData.fullname,
+//                ultah = userData.ultah,
+//                address = userData.address,
+//                //email from live data
+//                email = emailPatch.value
+//            )
+//            runOnUiThread {
+//                if (result != 0){
+//                    getUserData()
+//                    Toast.makeText(context, "Update Data successful", Toast.LENGTH_SHORT).show()
+//                }else{
+//                    Toast.makeText(context, "Update Data Fail", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }
+//    }
+
+
+
+//    fun updateDatsa(userData: User){
+//        mDB = ApplicationDatabase.getInstance(context)
+//        viewModelScope.launch(Dispatchers.IO){
+//            val result = mDB?.userDao()?.updateProfile(
+//                username = userData.username,
+//                fullname = userData.fullname,
+//                ultah = userData.ultah,
+//                address = userData.address,
+//                //email from live data
+//                email = emailPatch.value
+//            )
+//            runBlocking(Dispatchers.Main){
+//                if (result != 0){
+//                    getUserData()
+//                    Toast.makeText(context, "Update Data successful", Toast.LENGTH_SHORT).show()
+//                }else{
+//                    Toast.makeText(context, "Update Data Fail", Toast.LENGTH_SHORT).show()
+//                }
+//            }
 //
-    fun getUserData() {
-        val usernameResult = StringBuffer()
-        val fullnameResult = StringBuffer()
-        val birthdateResult = StringBuffer()
-        val addressResult = StringBuffer()
-        mDB = ApplicationDatabase.getInstance(context)
-        executor.execute {
-            val user = mDB?.userDao()?.getUsername(emailPatch.value)
-            Log.d("cariemail",emailPatch.value.toString())
-            Log.d("this", user.toString())
-            runOnUiThread {
-                user?.forEach {
-                    usernameResult.append(it.username)
-                    fullnameResult.append(it.fullname)
-                    birthdateResult.append(it.ultah)
-                    addressResult.append(it.address)
-                }
-
-                usernamePatch.value=usernameResult.toString()
-                fullnamePatch.value=fullnameResult.toString()
-                birthPatch.value=birthdateResult.toString()
-                addressPatch.value=addressResult.toString()
-                Log.d("FULLNAME",fullnamePatch.value.toString())
-                editor.putString("username_key", usernamePatch.value)
-                editor.apply()
-            }
-        }
-    }
-    fun updateData(userData: User){
-        mDB = ApplicationDatabase.getInstance(context)
-        executor.execute{
-            val result = mDB?.userDao()?.updateProfile(
-                username = userData.username,
-                fullname = userData.fullname,
-                ultah = userData.ultah,
-                address = userData.address,
-                //email from live data
-                email = emailPatch.value
-            )
-            runOnUiThread {
-                if (result != 0){
-                    getUserData()
-                    Toast.makeText(context, "Update Data successful", Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(context, "Update Data Fail", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-        }
-
-    }
-
+//        }
+//
+//    }
     fun logOut(){
     editor.clear()
     editor.apply()
     _validation.postValue(0)
-//    cekValidLogOut.value = 0
-//    cekValidLogin.value = 0
-//    cekValidRegister.value = 0
-//    cekValidSplash.value = 0
     }
 }

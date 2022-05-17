@@ -4,14 +4,19 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.movietmdbchallenge.data.local.ApplicationDatabase
+import com.example.movietmdbchallenge.data.local.UserRepository
 import kotlinx.coroutines.launch
 
-class SplashViewModel(app: Application): AndroidViewModel(app) {
+class SplashViewModel(private val repository: UserRepository): ViewModel() {
+    val loginValidation : MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    fun result() : LiveData<Boolean>{
+        return loginValidation
+    }
+    fun loginCheck(): LiveData<String>{
+        return repository.getUsernameValue().asLiveData()
+    }
 
 /*    val cekValidSplash : MutableLiveData<Int> by lazy {
         MutableLiveData<Int>()

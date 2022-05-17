@@ -7,96 +7,51 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import com.example.movietmdbchallenge.data.local.ApplicationDatabase
+import com.example.movietmdbchallenge.data.local.UserRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
+import kotlin.math.log
 
-class LoginViewModel(app :Application) :AndroidViewModel(app) {
+class LoginViewModel(private val repository: UserRepository) : ViewModel() {
 
-    val context by lazy {
-        getApplication<Application>().applicationContext
+    val cekValidLogin : MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
     }
-    val emailCatch : MutableLiveData<String> by lazy { MutableLiveData<String>()}
-    val password : MutableLiveData<String> by lazy { MutableLiveData<String>() }
-    val username: MutableLiveData<String> by lazy { MutableLiveData<String>()}
-    val executor = Executors.newSingleThreadExecutor()
-    val messageHandler = Handler(Looper.getMainLooper())
-    private fun runOnUiThread(action: Runnable) {
-        messageHandler.post(action)
-    }
-    val cekValidLogin : MutableLiveData<Int> by lazy {
-        MutableLiveData<Int>()
-    }
-    fun getCekValidLogin(): LiveData<Int> {
+    fun getCekValidLogin(): LiveData<Boolean> {
         return cekValidLogin
     }
-    val cekValidSplash : MutableLiveData<Int> by lazy {
-        MutableLiveData<Int>()
+    fun reset(){
+        cekValidLogin.value=false
     }
-    fun getCekValidSplash(): LiveData<Int> {
-        return cekValidSplash
-    }
-    val cekValidLogOut : MutableLiveData<Int> by lazy {
-        MutableLiveData<Int>()
-    }
-    fun getcekValidLogOut(): LiveData<Int> {
-        return cekValidLogOut
-    }
-    //SHAREDPREFERENCE
-    private val sharedPreffile = "sharedpreferences"
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
-        sharedPreffile,
-        Context.MODE_PRIVATE
-    )
-    private val editor: SharedPreferences.Editor = sharedPreferences.edit()
-
-
-    private var mDB: ApplicationDatabase? = null
     fun login(email:String,password:String){
-        mDB = ApplicationDatabase.getInstance(context)
-        executor.execute{
-            val login = mDB?.userDao()?.getUserAccount(email,password)
-            runOnUiThread {
-                emailCatch.value = email
-                Log.d("CEKLOGIN",login.toString())
+        val emailtempt = StringBuffer()
+        val passwordtempt = StringBuffer()
+        val usernametempt = StringBuffer()
+        viewModelScope.launch(Dispatchers.IO){
+            val login = repository.authLogin(email,password)
+            runBlocking(Dispatchers.Main) {
                 if (login != null) {
-                    if (login.isEmpty() ){
-                        Toast.makeText(context, "Username atau Password Anda Gagal", Toast.LENGTH_SHORT).show()
-                        cekValidLogin.postValue(0)
+                    login.let {
+                        emailtempt.append(it.email.toString())
+                        passwordtempt.append(it.password.toString())
+                        usernametempt.append(it.username.toString())
+                    }
+                    if (email==emailtempt.toString() && password==passwordtempt.toString()){
+                        cekValidLogin.value = true
+                        viewModelScope.launch {
+                            repository.setUsername(usernametempt.toString())
+                            repository.setEmail(emailtempt.toString())
+                        }
                     }else{
-                        Toast.makeText(context, "Username atau Password Anda Sukses", Toast.LENGTH_SHORT).show()
-                        cekValidLogin.postValue(1)
-                        emailCatch.postValue(email)
-                        editor.putString("email_key",emailCatch.value)
-                        editor.putString("password_key",password)
-                        editor.apply()
-
+                        cekValidLogin.value = true
                     }
                 }
             }
         }
     }
 
-    fun loginCek(){
-        val emailPatch = sharedPreferences.getString("email_key", "defaultValue")
-        val usernamePatch= sharedPreferences.getString("username_key","defaultValue")
-        if(emailPatch !="defaultValue"){
-            cekValidSplash.postValue(1)
-            username.value= usernamePatch
-            emailCatch.value= emailPatch
-
-        }else{
-            cekValidSplash.value=0
-            emailCatch.value= emailPatch
-
-        }
-    }
-
-    fun logout(){
-        editor.clear()
-        editor.apply()
-        cekValidLogOut.postValue(0)
-    }
 }

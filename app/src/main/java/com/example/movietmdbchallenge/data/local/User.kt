@@ -1,10 +1,12 @@
 package com.example.listmoview.room
 
+import android.net.Uri
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
+import java.security.cert.CertPath
 import java.util.*
 
 
@@ -17,7 +19,8 @@ data class User(
     @ColumnInfo(name = "username")      var username : String? = null,
     @ColumnInfo(name = "fullname")      var fullname : String? = null,
     @ColumnInfo(name = "ultah")         var ultah    : String? = null,
-    @ColumnInfo(name = "address")       var address  : String? = null
+    @ColumnInfo(name = "address")       var address  : String? = null,
+    @ColumnInfo(name=  "imagepath")     var imagePath: String? = null
 ):Parcelable
 
 
