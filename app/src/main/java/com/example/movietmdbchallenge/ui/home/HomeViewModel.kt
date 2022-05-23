@@ -1,25 +1,25 @@
-package com.example.movietmdbchallenge.ui.home.viewModel
+package com.example.movietmdbchallenge.ui.home
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.movietmdbchallenge.data.api.recommendationMovie.RecommendationMovieResponse
+import androidx.lifecycle.asLiveData
 import com.example.movietmdbchallenge.data.api.recommendationMovie.Result
-
+import com.example.movietmdbchallenge.data.local.UserRepository
 import com.example.movietmdbchallenge.remote.MovieRepository
 import com.example.movietmdbchallenge.remote.MoviesRemoteDataSource
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-class MovieRecommendationViewModel(private val repository: MovieRepository) : ViewModel() {
 
+class HomeViewModel(
+    private val userRepository: UserRepository,
+    private val repository: MovieRepository
+) : ViewModel(){
     private val  movieRecommendation : MutableLiveData<List<Result>> by lazy {
         MutableLiveData<List<Result>>().also {
             getAllMoviesRecommendation()
         }
     }
-    fun getMovieRecommendation():LiveData<List<Result>>{
+    fun getMovieRecommendation(): LiveData<List<Result>> {
         return movieRecommendation
     }
     val username: MutableLiveData<String> by lazy { MutableLiveData<String>()}
@@ -33,4 +33,10 @@ class MovieRecommendationViewModel(private val repository: MovieRepository) : Vi
             }
         })
     }
+    fun getUsername(): LiveData<String>{
+        return userRepository.getUsernameValue().asLiveData()
+    }
+
+
+
 }

@@ -14,22 +14,23 @@ abstract class ApplicationDatabase(): RoomDatabase() {
     abstract fun userDao(): UserDao
 //    abstract fun noteDao(): NoteDao
 
-    companion object{
-        private var INSTANCE: ApplicationDatabase? = null
-        fun getInstance(context: Context): ApplicationDatabase? {
-            if(INSTANCE == null) {
-                synchronized(ApplicationDatabase::class) {
-                    INSTANCE = Room.databaseBuilder(
-                        context.applicationContext,
-                        ApplicationDatabase::class.java, "UserMovie1dd56665242.db").build()
-                }
-            }
-            return INSTANCE
-        }
-        fun destroyInstance(){
-            INSTANCE = null
-        }
-    }
+//    companion object{
+//        private var INSTANCE: ApplicationDatabase? = null
+//        fun getInstance(context: Context): ApplicationDatabase? {
+//            if(INSTANCE == null) {
+//                synchronized(ApplicationDatabase::class)
+//                {
+//                 INSTANCE = Room.databaseBuilder(
+//                      context.applicationContext,
+//                        ApplicationDatabase::class.java, "UserMovie1dd56665242.db").build()
+//                }
+//            }
+//            return INSTANCE
+//        }
+//        fun destroyInstance(){
+//            INSTANCE = null
+//        }
+//    }
 
 
 }

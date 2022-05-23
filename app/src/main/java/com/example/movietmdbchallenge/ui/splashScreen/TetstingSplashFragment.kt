@@ -11,8 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.movietmdbchallenge.R
 import com.example.movietmdbchallenge.databinding.FragmentTetstingSplashBinding
-import com.example.movietmdbchallenge.ui.ViewModelFactory
-import com.example.movietmdbchallenge.ui.home.UserViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class TetstingSplashFragment : Fragment() {
@@ -22,7 +21,7 @@ class TetstingSplashFragment : Fragment() {
 // onDestroyView.
     private val binding get() = _binding!!
 
-    lateinit var viewModel : SplashViewModel
+    private val viewModel : SplashViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,8 +34,8 @@ class TetstingSplashFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = ViewModelFactory(view.context)
-        viewModel = ViewModelProvider(requireActivity(), factory)[SplashViewModel::class.java]
+//        val factory = ViewModelFactory(view.context)
+//        viewModel = ViewModelProvider(requireActivity(), factory)[SplashViewModel::class.java]
 
         viewModel.loginCheck()
         navigate()

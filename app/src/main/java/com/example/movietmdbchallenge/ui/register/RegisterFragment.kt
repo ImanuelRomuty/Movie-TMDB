@@ -12,8 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.listmoview.room.User
 import com.example.movietmdbchallenge.R
 import com.example.movietmdbchallenge.databinding.FragmentRegisterBinding
-import com.example.movietmdbchallenge.ui.ViewModelFactory
-import com.example.movietmdbchallenge.ui.home.UserViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class RegisterFragment : Fragment() {
@@ -22,7 +21,7 @@ class RegisterFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 //    private val viewModel : UserViewModel by activityViewModels()
-    lateinit var registerViewModel: RegisterViewModel
+    private val registerViewModel: RegisterViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,18 +40,13 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = ViewModelFactory(view.context)
-        registerViewModel=ViewModelProvider(requireActivity(),factory)[RegisterViewModel::class.java]
-
-
-
         binding.signUpButton.setOnClickListener {
             val user = User(
                 email    = binding.inputEmailEditText.text.toString(),
                 password = binding.inputPasswordEditText.text.toString(),
                 username = binding.inputUsernameEditText.text.toString()
             )
-            registerViewModel.register(user,binding.inputConfirmPasswordEditText.text.toString())
+            registerViewModel.register(user)
         }
         registerViewModel.getCekValidRegister().observe(viewLifecycleOwner){
             if(it == true){

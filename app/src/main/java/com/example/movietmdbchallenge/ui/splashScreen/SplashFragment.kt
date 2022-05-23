@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.movietmdbchallenge.R
 import com.example.movietmdbchallenge.databinding.FragmentSplashBinding
-import com.example.movietmdbchallenge.ui.home.UserViewModel
+
 import com.example.movietmdbchallenge.ui.login.LoginViewModel
 
 
@@ -20,7 +20,7 @@ class SplashFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val viewModel : UserViewModel by activityViewModels()
+//    private val viewModel : UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

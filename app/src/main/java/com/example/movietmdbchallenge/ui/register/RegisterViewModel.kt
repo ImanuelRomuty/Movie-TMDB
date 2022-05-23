@@ -12,20 +12,25 @@ import com.example.movietmdbchallenge.data.local.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.koin.dsl.module
 import java.util.concurrent.Executors
 
-class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
 
+
+class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
     val cekValidRegister : MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
+
     fun getCekValidRegister(): LiveData<Boolean> {
         return cekValidRegister
     }
+
     fun reset(){
         cekValidRegister.postValue(false)
     }
-    fun register(userData: User, cekPassword: String) {
+
+    fun register(userData: User) {
         viewModelScope.launch(Dispatchers.IO){
             val result = repository.registerUser(userData)
             runBlocking(Dispatchers.Main){
@@ -35,4 +40,5 @@ class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
             }
         }
     }
+
 }

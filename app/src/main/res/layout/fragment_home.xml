@@ -64,7 +64,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recommendation_movie_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
@@ -83,14 +83,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recommendation_movie_recycler_view" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/upcoming_movie_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:listitem="@layout/list_recommendation"/>
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/upcoming_movie_recycler_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="220dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView3"-->
+<!--        tools:listitem="@layout/list_recommendation"/>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

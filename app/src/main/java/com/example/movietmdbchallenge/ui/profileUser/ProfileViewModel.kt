@@ -7,6 +7,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
+//val profileViewModel = module{
+//    factory{
+//        ProfileViewModel
+//    }
+//}
+
 class ProfileViewModel(private val repository: UserRepository): ViewModel() {
     private val user : MutableLiveData<User> by lazy {
         MutableLiveData<User>()
@@ -29,11 +35,13 @@ class ProfileViewModel(private val repository: UserRepository): ViewModel() {
     fun getEmail():LiveData<String>{
         return repository.getEmailValue().asLiveData()
     }
+
     fun setUsername(username:String){
         viewModelScope.launch {
             repository.setUsername(username)
         }
     }
+
     fun logOut(){
         viewModelScope.launch {
             repository.clearDataStore()

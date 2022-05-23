@@ -12,20 +12,19 @@ import kotlinx.coroutines.flow.map
 
 class UserRepository constructor(private val userDao: UserDao, private val context: Context) {
     companion object{
-        private var instance : UserRepository? = null
-        fun getInstance(context: Context) : UserRepository?{
-            return instance ?: synchronized(UserRepository::class.java){
-                if (instance==null){
-                    val database = ApplicationDatabase.getInstance(context)
-                    instance = UserRepository(database!!.userDao(),context)
-                }
-                return instance
-            }
-        }
+//        private var instance : UserRepository? = null
+//        fun getInstance(context: Context) : UserRepository?{
+//            return instance ?: synchronized(UserRepository::class.java){
+//                if (instance==null){
+//                    val database = ApplicationDatabase.getInstance(context)
+//                    instance = UserRepository(database!!.userDao(),context)
+//                }
+//                return instance
+//            }
+//        }
         private const val DATASTORE_NAME = "preferences"
         private val USERNAME_KEY         = stringPreferencesKey("username_key")
         private val EMAIL_KEY            = stringPreferencesKey("email_key")
-
         private val Context.prefDataStore by preferencesDataStore(name = DATASTORE_NAME)
     }
     suspend fun registerUser(user:User):Long{

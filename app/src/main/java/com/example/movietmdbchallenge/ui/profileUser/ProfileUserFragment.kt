@@ -25,38 +25,29 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.listmoview.room.User
 import com.example.movietmdbchallenge.R
 import com.example.movietmdbchallenge.databinding.FragmentProfileUserBinding
-import com.example.movietmdbchallenge.ui.ViewModelFactory
-import com.example.movietmdbchallenge.ui.home.UserViewModel
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileUserFragment : Fragment() {
     private val REQUEST_CODE_PERMISSION = 100
     var imagePath :String?=null
-    //KAMERA
     private val galleryResult =
         registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
-            Log.d("HASILKAMERA",result.toString())
             imagePath = result.toString()
-//            binding.imageProfile.setImageURI(result)
             Glide.with(requireActivity())
                 .load(result)
                 .apply(RequestOptions.centerCropTransform())
                 .error(R.drawable.ic_launcher_background)
                 .into(binding.imageProfile)
         }
-
-
-
-
-
-
     private var _binding: FragmentProfileUserBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    lateinit var viewModel : ProfileViewModel
+    private val viewModel : ProfileViewModel by viewModel()
     private var useernameValue = "default"
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,16 +60,13 @@ class ProfileUserFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = ViewModelFactory(view.context)
-        viewModel = ViewModelProvider(requireActivity(),factory)[ProfileViewModel::class.java]
+//        val factory = ViewModelFactory(view.context)
+//        viewModel = ViewModelProvider(requireActivity(),factory)[ProfileViewModel::class.java]
         username()
         setData()
-
         binding.imageProfile.setOnClickListener {
             checkingPermissions()
         }
-
-
         binding.logoutButton.setOnClickListener {
             viewModel.logOut()
             findNavController().navigate(ProfileUserFragmentDirections.actionProfileUserFragmentToLoginFragment())
@@ -145,16 +133,12 @@ class ProfileUserFragment : Fragment() {
         androidx.appcompat.app.AlertDialog.Builder(requireContext())
             .setMessage("Pilih Gambar")
             .setPositiveButton("Gallery") { _, _ -> openGallery() }
-//            .setNegativeButton("Camera") { _, _ -> openCamera() }
             .show()
     }
     private fun openGallery() {
         activity?.intent?.type = "image/*"
         galleryResult.launch("image/*")
     }
-
-
-
 
     private fun showPermissionDeniedDialog() {
         androidx.appcompat.app.AlertDialog.Builder(requireContext())
@@ -172,10 +156,6 @@ class ProfileUserFragment : Fragment() {
             .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
             .show()
     }
-
-
-
-
     private fun username(){
         viewModel.getUsername().observe(viewLifecycleOwner){result ->
             useernameValue = result
@@ -222,9 +202,6 @@ class ProfileUserFragment : Fragment() {
             .setMessage("Apakah anda ingin Keluar?").setTitle("Confirm Logout")
             .create().show()
     }
-
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

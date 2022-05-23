@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.example.movietmdbchallenge.R
 import com.example.movietmdbchallenge.databinding.FragmentRecomendationBinding
 
-
 class RecomendationFragment : Fragment() {
     private var _binding: FragmentRecomendationBinding? = null
     // This property is only valid between onCreateView and
@@ -26,12 +25,10 @@ class RecomendationFragment : Fragment() {
         val view = binding.root
         return view
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Glide.with(this)
@@ -40,7 +37,5 @@ class RecomendationFragment : Fragment() {
         binding.titleTextView.text = arguments.recommendationMovie.title
         binding.overviewTextView.text = arguments.recommendationMovie.overview
         binding.releaseDateTextView.text = arguments.recommendationMovie.releaseDate
-
     }
-
 }

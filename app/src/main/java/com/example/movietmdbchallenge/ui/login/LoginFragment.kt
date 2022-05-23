@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.movietmdbchallenge.R
 import com.example.movietmdbchallenge.databinding.FragmentLoginBinding
-import com.example.movietmdbchallenge.ui.ViewModelFactory
-import com.example.movietmdbchallenge.ui.home.UserViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -20,7 +20,7 @@ class LoginFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 //    private val viewModel : UserViewModel by activityViewModels()
-    lateinit var loginViewModel: LoginViewModel
+    private val loginViewModel: LoginViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,9 +37,6 @@ class LoginFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = ViewModelFactory(view.context)
-        loginViewModel = ViewModelProvider(requireActivity(),factory)[LoginViewModel::class.java]
-
 
         binding.registerButton.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
