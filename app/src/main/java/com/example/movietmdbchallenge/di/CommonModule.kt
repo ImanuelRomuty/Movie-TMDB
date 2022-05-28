@@ -2,6 +2,8 @@ package com.example.movietmdbchallenge.di
 
 
 import androidx.room.Room
+import com.chuckerteam.chucker.api.Chucker
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.movietmdbchallenge.data.local.ApplicationDatabase
 import com.example.movietmdbchallenge.network.MovieApiService
 import com.example.movietmdbchallenge.remote.MoviesRemoteDataSource
@@ -31,7 +33,7 @@ val networkModule = module{
             level = HttpLoggingInterceptor.Level.BODY
         }
         OkHttpClient.Builder()
-            .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(ChuckerInterceptor(androidContext()))
             .build()
     }
     single {

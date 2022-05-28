@@ -10,12 +10,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 
 class MyApplication: Application() {
-//    private val remoteDataSource by lazy {
-//        MoviesRemoteDataSource()
-//    }
-//    val repository by lazy {
-//        MovieRepository(remoteDataSource)
-//    }
 
     override fun onCreate() {
         super.onCreate()

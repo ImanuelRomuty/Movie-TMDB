@@ -31,19 +31,23 @@
         android:layout_height="50dp"
         android:src="@drawable/people"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="60dp"
-        android:background="@color/black"
-        android:padding="10dp"
-        android:src="@drawable/img_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:focusable="false"
+        android:saveEnabled="false"
+        />
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:layout_marginTop="60dp"-->
+<!--        android:background="@color/black"-->
+<!--        android:padding="10dp"-->
+<!--        android:src="@drawable/img_logo"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="1.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
 
     <TextView
@@ -55,7 +59,7 @@
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/username_textView" />
     <!--        <TextView-->
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="wrap_content"-->
